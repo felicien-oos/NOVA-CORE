@@ -1,0 +1,100 @@
+// App futuriste Nova Core
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { useState } from "react";
+
+function App() {
+  return (
+    <Router>
+      <div className="min-h-screen bg-black text-white font-mono">
+        <header className="p-6 text-center text-3xl font-bold tracking-widest text-cyan-400">
+          🚀 NOVA CORE INTERFACE
+        </header>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/ia" element={<AIControl />} />
+          <Route path="/secure" element={<SecureZone />} />
+          <Route path="/settings" element={<Settings />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+function Home() {
+  return (
+    <div className="flex flex-col items-center gap-6 mt-10">
+      <NavButton to="/dashboard" label="🧠 Tableau de Bord" />
+      <NavButton to="/ia" label="🤖 Centre IA" />
+      <NavButton to="/secure" label="🔐 Zone Sécurisée" />
+      <NavButton to="/settings" label="⚙️ Paramètres" />
+    </div>
+  );
+}
+
+function NavButton({ to, label }) {
+  return (
+    <Link
+      to={to}
+      className="px-6 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-400 transition text-xl shadow-lg border border-cyan-300"
+    >
+      {label}
+    </Link>
+  );
+}
+
+function Dashboard() {
+  return (
+    <Page title="🧠 Tableau de Bord">
+      <p className="text-lg">Bienvenue dans le centre de contrôle des données en temps réel.</p>
+    </Page>
+  );
+}
+
+function AIControl() {
+  return (
+    <Page title="🤖 Centre IA">
+      <p className="text-lg">L'IA est en ligne. Elle est prête à répondre à vos commandes.</p>
+    </Page>
+  );
+}
+
+function SecureZone() {
+  return (
+    <Page title="🔐 Zone Sécurisée">
+      <p className="text-lg">Veuillez entrer un code secret ou vous authentifier biométriquement.</p>
+    </Page>
+  );
+}
+
+function Settings() {
+  const [theme, setTheme] = useState("Néon");
+
+  return (
+    <Page title="⚙️ Paramètres">
+      <p className="mb-2">Thème actuel : <strong>{theme}</strong></p>
+      <button
+        onClick={() => setTheme(theme === "Néon" ? "Sombre" : "Néon")}
+        className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-500 transition"
+      >
+        Changer de thème
+      </button>
+    </Page>
+  );
+}
+
+function Page({ title, children }) {
+  return (
+    <div className="p-10">
+      <h2 className="text-2xl mb-4 text-cyan-300 font-semibold">{title}</h2>
+      {children}
+      <div className="mt-6">
+        <Link to="/" className="text-cyan-400 hover:underline">
+          ⬅️ Retour à l'accueil
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+export default App;
