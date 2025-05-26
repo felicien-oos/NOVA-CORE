@@ -1,18 +1,34 @@
-// App futuriste Nova Core
+// App ULTRA FUTURISTE – NOVA CORE X V2
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 function App() {
+  useEffect(() => {
+    const synth = window.speechSynthesis;
+    const utter = new SpeechSynthesisUtterance("Bienvenue dans Nova Core X. Préparation du système interstellaire.");
+    synth.speak(utter);
+  }, []);
+
+  useEffect(() => {
+    const audio = new Audio("https://www.bensound.com/bensound-music/bensound-scifi.mp3");
+    audio.loop = true;
+    audio.volume = 0.2;
+    audio.play();
+    return () => audio.pause();
+  }, []);
+
   return (
     <Router>
-      <div className="min-h-screen bg-black text-white font-mono">
-        <header className="p-6 text-center text-3xl font-bold tracking-widest text-cyan-400">
-          🚀 NOVA CORE INTERFACE
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-blue-950 text-white font-sans overflow-hidden">
+        <header className="p-6 text-center text-4xl font-bold tracking-wider text-cyan-400 animate-pulse shadow-lg">
+          🌌 NOVA CORE X
+          <div className="text-sm mt-2 text-cyan-200">Heure Galactique : {new Date().toLocaleTimeString()}</div>
         </header>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/ia" element={<AIControl />} />
+          <Route path="/ai" element={<AIControl />} />
           <Route path="/secure" element={<SecureZone />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
@@ -23,46 +39,89 @@ function App() {
 
 function Home() {
   return (
-    <div className="flex flex-col items-center gap-6 mt-10">
-      <NavButton to="/dashboard" label="🧠 Tableau de Bord" />
-      <NavButton to="/ia" label="🤖 Centre IA" />
-      <NavButton to="/secure" label="🔐 Zone Sécurisée" />
-      <NavButton to="/settings" label="⚙️ Paramètres" />
+    <div className="flex flex-col items-center gap-8 mt-16">
+      <AnimatedButton to="/dashboard" label="🌐 Interface Universelle" />
+      <AnimatedButton to="/ai" label="🧠 IA Centrale" />
+      <AnimatedButton to="/secure" label="🔒 Noyau Sécurisé" />
+      <AnimatedButton to="/settings" label="⚙️ Réglages Système" />
     </div>
   );
 }
 
-function NavButton({ to, label }) {
+function AnimatedButton({ to, label }) {
   return (
-    <Link
-      to={to}
-      className="px-6 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-400 transition text-xl shadow-lg border border-cyan-300"
-    >
-      {label}
-    </Link>
+    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+      <Link
+        to={to}
+        className="px-8 py-4 rounded-full bg-cyan-500 hover:bg-cyan-300 transition text-xl font-bold shadow-2xl border-2 border-cyan-200 backdrop-blur-md"
+      >
+        {label}
+      </Link>
+    </motion.div>
   );
 }
 
 function Dashboard() {
   return (
-    <Page title="🧠 Tableau de Bord">
-      <p className="text-lg">Bienvenue dans le centre de contrôle des données en temps réel.</p>
+    <Page title="🌐 Interface Universelle">
+      <p className="text-lg">Données holographiques actives. Scan en cours de l’univers numérique.</p>
+      <pre className="mt-4 p-4 bg-gray-800 rounded text-sm">
+        [NOVA-LOG] ↳ ⟁⟁⟁ Protocole Sigma-7 engagé ⟁⟁⟁
+        [NOVA-LOG] ↳ Analyse spectrale des flux quantiques en cours...
+      </pre>
     </Page>
   );
 }
 
 function AIControl() {
+  useEffect(() => {
+    const speak = new SpeechSynthesisUtterance("Connexion à l'intelligence artificielle centrale confirmée.");
+    window.speechSynthesis.speak(speak);
+  }, []);
+
   return (
-    <Page title="🤖 Centre IA">
-      <p className="text-lg">L'IA est en ligne. Elle est prête à répondre à vos commandes.</p>
+    <Page title="🧠 IA Centrale">
+      <p className="text-lg">Connexion à l'intelligence principale établie. Prêt à exécuter vos commandes.</p>
     </Page>
   );
 }
 
 function SecureZone() {
+  const [pin, setPin] = useState("");
+  const [access, setAccess] = useState(false);
+
+  const handleAccess = () => {
+    if (pin === "4242") {
+      setAccess(true);
+      const utter = new SpeechSynthesisUtterance("Accès au noyau sécurisé confirmé.");
+      window.speechSynthesis.speak(utter);
+    } else {
+      alert("Code incorrect. Accès refusé.");
+    }
+  };
+
   return (
-    <Page title="🔐 Zone Sécurisée">
-      <p className="text-lg">Veuillez entrer un code secret ou vous authentifier biométriquement.</p>
+    <Page title="🔒 Noyau Sécurisé">
+      {!access ? (
+        <div className="flex flex-col items-start gap-4">
+          <p className="text-lg">Authentification requise. Entrez le code d’accès :</p>
+          <input
+            type="password"
+            value={pin}
+            onChange={(e) => setPin(e.target.value)}
+            className="px-4 py-2 text-black rounded border border-cyan-400"
+            placeholder="Code secret"
+          />
+          <button onClick={handleAccess} className="bg-cyan-500 px-4 py-2 rounded hover:bg-cyan-400">
+            🔓 Déverrouiller
+          </button>
+        </div>
+      ) : (
+        <div>
+          <p className="text-lg">Accès accordé. Bienvenue dans le noyau secret de Nova Core X.</p>
+          <p className="mt-4">🔐 Données classifiées visibles.</p>
+        </div>
+      )}
     </Page>
   );
 }
@@ -71,13 +130,13 @@ function Settings() {
   const [theme, setTheme] = useState("Néon");
 
   return (
-    <Page title="⚙️ Paramètres">
+    <Page title="⚙️ Réglages Système">
       <p className="mb-2">Thème actuel : <strong>{theme}</strong></p>
       <button
         onClick={() => setTheme(theme === "Néon" ? "Sombre" : "Néon")}
-        className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-500 transition"
+        className="px-4 py-2 bg-gray-700 rounded-full hover:bg-gray-500 transition border border-cyan-300"
       >
-        Changer de thème
+        🔄 Changer de thème
       </button>
     </Page>
   );
@@ -85,15 +144,20 @@ function Settings() {
 
 function Page({ title, children }) {
   return (
-    <div className="p-10">
-      <h2 className="text-2xl mb-4 text-cyan-300 font-semibold">{title}</h2>
+    <motion.div 
+      className="p-10 max-w-2xl mx-auto"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      <h2 className="text-3xl mb-6 text-cyan-300 font-extrabold animate-pulse">{title}</h2>
       {children}
-      <div className="mt-6">
+      <div className="mt-10">
         <Link to="/" className="text-cyan-400 hover:underline">
-          ⬅️ Retour à l'accueil
+          ⬅️ Retour à l'accueil principal
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
