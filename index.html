@@ -1,5 +1,5 @@
-// App ULTRA FUTURISTE – NOVA CORE X V2
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+// App ULTRA FUTURISTE – NOVA CORE X V4 – PAGE DYNAMIQUE SUPRÊME
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
@@ -11,19 +11,19 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const audio = new Audio("https://www.bensound.com/bensound-music/bensound-scifi.mp3");
+    const audio = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_c379bb86b5.mp3?filename=deep-space-ambient-11273.mp3");
     audio.loop = true;
-    audio.volume = 0.2;
+    audio.volume = 0.3;
     audio.play();
     return () => audio.pause();
   }, []);
 
   return (
     <Router>
-      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-blue-950 text-white font-sans overflow-hidden">
-        <header className="p-6 text-center text-4xl font-bold tracking-wider text-cyan-400 animate-pulse shadow-lg">
-          🌌 NOVA CORE X
-          <div className="text-sm mt-2 text-cyan-200">Heure Galactique : {new Date().toLocaleTimeString()}</div>
+      <div className="min-h-screen bg-gradient-to-br from-black via-purple-900 to-blue-950 text-white font-sans overflow-hidden futuristic-font">
+        <header className="p-6 text-center text-5xl font-black tracking-widest text-fuchsia-400 animate-pulse neon-glow">
+          🚀 NOVA CORE X ∞
+          <div className="text-sm mt-2 text-fuchsia-200">Heure Galactique : {new Date().toLocaleTimeString()}</div>
         </header>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -31,6 +31,8 @@ function App() {
           <Route path="/ai" element={<AIControl />} />
           <Route path="/secure" element={<SecureZone />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/exploration" element={<Exploration />} />
+          <Route path="/vaisseau" element={<VaisseauPilotage />} />
         </Routes>
       </div>
     </Router>
@@ -39,21 +41,23 @@ function App() {
 
 function Home() {
   return (
-    <div className="flex flex-col items-center gap-8 mt-16">
+    <div className="flex flex-col items-center gap-10 mt-20 animate-fade-in">
       <AnimatedButton to="/dashboard" label="🌐 Interface Universelle" />
       <AnimatedButton to="/ai" label="🧠 IA Centrale" />
       <AnimatedButton to="/secure" label="🔒 Noyau Sécurisé" />
       <AnimatedButton to="/settings" label="⚙️ Réglages Système" />
+      <AnimatedButton to="/exploration" label="🪐 Exploration Galactique" />
+      <AnimatedButton to="/vaisseau" label="🚀 Pilotage du Vaisseau" />
     </div>
   );
 }
 
 function AnimatedButton({ to, label }) {
   return (
-    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+    <motion.div whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.95 }}>
       <Link
         to={to}
-        className="px-8 py-4 rounded-full bg-cyan-500 hover:bg-cyan-300 transition text-xl font-bold shadow-2xl border-2 border-cyan-200 backdrop-blur-md"
+        className="px-10 py-5 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-indigo-500 hover:to-pink-500 transition text-xl font-extrabold shadow-[0_0_20px_rgba(255,0,255,0.6)] border-4 border-pink-300"
       >
         {label}
       </Link>
@@ -61,13 +65,32 @@ function AnimatedButton({ to, label }) {
   );
 }
 
+function Page({ title, children }) {
+  return (
+    <motion.div 
+      className="p-10 max-w-3xl mx-auto bg-opacity-20 backdrop-blur-md border border-fuchsia-500 rounded-xl mt-6"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7 }}
+    >
+      <h2 className="text-4xl mb-6 text-fuchsia-300 font-extrabold animate-pulse neon-glow">{title}</h2>
+      {children}
+      <div className="mt-10">
+        <Link to="/" className="text-fuchsia-300 hover:underline">
+          ⬅️ Retour à l'accueil principal
+        </Link>
+      </div>
+    </motion.div>
+  );
+}
+
 function Dashboard() {
   return (
     <Page title="🌐 Interface Universelle">
-      <p className="text-lg">Données holographiques actives. Scan en cours de l’univers numérique.</p>
-      <pre className="mt-4 p-4 bg-gray-800 rounded text-sm">
-        [NOVA-LOG] ↳ ⟁⟁⟁ Protocole Sigma-7 engagé ⟁⟁⟁
-        [NOVA-LOG] ↳ Analyse spectrale des flux quantiques en cours...
+      <p className="text-lg">🔭 Analyse des flux cosmiques en temps réel. Propulsion quantique stabilisée.</p>
+      <pre className="mt-4 p-4 bg-gray-900 rounded text-sm text-green-400">
+[NOVA-LOG] ⇢ ⟁⟁⟁ Protocole Sigma-7 engagé ⟁⟁⟁
+[NOVA-LOG] ⇢ 🔎 Scannage multi-dimensionnel enclenché…
       </pre>
     </Page>
   );
@@ -75,13 +98,13 @@ function Dashboard() {
 
 function AIControl() {
   useEffect(() => {
-    const speak = new SpeechSynthesisUtterance("Connexion à l'intelligence artificielle centrale confirmée.");
+    const speak = new SpeechSynthesisUtterance("Connexion à l'intelligence artificielle centrale confirmée. Nova Core prêt à recevoir vos ordres.");
     window.speechSynthesis.speak(speak);
   }, []);
 
   return (
     <Page title="🧠 IA Centrale">
-      <p className="text-lg">Connexion à l'intelligence principale établie. Prêt à exécuter vos commandes.</p>
+      <p className="text-lg">🤖 Connexion à l'IA confirmée. Activez une commande vocale ou saisissez votre requête holographique.</p>
     </Page>
   );
 }
@@ -93,9 +116,11 @@ function SecureZone() {
   const handleAccess = () => {
     if (pin === "4242") {
       setAccess(true);
-      const utter = new SpeechSynthesisUtterance("Accès au noyau sécurisé confirmé.");
+      const utter = new SpeechSynthesisUtterance("Accès au noyau sécurisé confirmé. Bienvenue Commandant.");
       window.speechSynthesis.speak(utter);
     } else {
+      const utter = new SpeechSynthesisUtterance("Code incorrect. Accès refusé. Intrusion détectée.");
+      window.speechSynthesis.speak(utter);
       alert("Code incorrect. Accès refusé.");
     }
   };
@@ -104,22 +129,22 @@ function SecureZone() {
     <Page title="🔒 Noyau Sécurisé">
       {!access ? (
         <div className="flex flex-col items-start gap-4">
-          <p className="text-lg">Authentification requise. Entrez le code d’accès :</p>
+          <p className="text-lg">🧬 Authentification biométrique désactivée. Entrez le code d’accès manuel :</p>
           <input
             type="password"
             value={pin}
             onChange={(e) => setPin(e.target.value)}
-            className="px-4 py-2 text-black rounded border border-cyan-400"
-            placeholder="Code secret"
+            className="px-4 py-2 text-black rounded border border-pink-400 shadow-md"
+            placeholder="Code secret galactique"
           />
-          <button onClick={handleAccess} className="bg-cyan-500 px-4 py-2 rounded hover:bg-cyan-400">
+          <button onClick={handleAccess} className="bg-pink-600 px-4 py-2 rounded hover:bg-pink-400 shadow-lg">
             🔓 Déverrouiller
           </button>
         </div>
       ) : (
         <div>
-          <p className="text-lg">Accès accordé. Bienvenue dans le noyau secret de Nova Core X.</p>
-          <p className="mt-4">🔐 Données classifiées visibles.</p>
+          <p className="text-lg">✅ Accès accordé. Noyau sécurisé activé.</p>
+          <p className="mt-4">📁 Fichiers ultra-confidentiels déverrouillés.</p>
         </div>
       )}
     </Page>
@@ -131,33 +156,30 @@ function Settings() {
 
   return (
     <Page title="⚙️ Réglages Système">
-      <p className="mb-2">Thème actuel : <strong>{theme}</strong></p>
+      <p className="mb-2">🎨 Thème actuel : <strong>{theme}</strong></p>
       <button
         onClick={() => setTheme(theme === "Néon" ? "Sombre" : "Néon")}
-        className="px-4 py-2 bg-gray-700 rounded-full hover:bg-gray-500 transition border border-cyan-300"
+        className="px-4 py-2 bg-gray-800 rounded-full hover:bg-gray-600 transition border border-pink-300"
       >
-        🔄 Changer de thème
+        🔄 Changer de thème galactique
       </button>
     </Page>
   );
 }
 
-function Page({ title, children }) {
+function Exploration() {
   return (
-    <motion.div 
-      className="p-10 max-w-2xl mx-auto"
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <h2 className="text-3xl mb-6 text-cyan-300 font-extrabold animate-pulse">{title}</h2>
-      {children}
-      <div className="mt-10">
-        <Link to="/" className="text-cyan-400 hover:underline">
-          ⬅️ Retour à l'accueil principal
-        </Link>
-      </div>
-    </motion.div>
+    <Page title="🪐 Exploration Galactique">
+      <p className="text-lg">🌌 Cartographie des galaxies voisines, téléportations en cours, analyse des exoplanètes détectées.</p>
+    </Page>
+  );
+}
+
+function VaisseauPilotage() {
+  return (
+    <Page title="🚀 Pilotage du Vaisseau">
+      <p className="text-lg">🧭 Contrôle du vaisseau Nova One. Propulsion ionique activée. Systèmes de défense en alerte verte.</p>
+    </Page>
   );
 }
 
